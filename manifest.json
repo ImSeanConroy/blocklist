@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Website Blocker",
+  "description": "Stay focused and efficient while browsing the web.",
+  "version": "0.1",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "webNavigation"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "options_page": "options/options.html"
+}

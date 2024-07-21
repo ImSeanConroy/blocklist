@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Website Blocker Options</title>
+    <link rel="stylesheet" href="options.css" />
+    <script src="options.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div>
+        <h1>Blocked Websites</h1>
+        <ul id="blocked-list"></ul>
+        <div class="row">
+          <input type="text" id="siteInput" placeholder="Enter site to block" />
+          <button id="blockButton">Block Site</button>
+        </div>
+      </div>
+      <div>
+        <h1>Block Schedule</h1>
+        <div class="row">
+          <label for="startHour">Start Hour:</label>
+          <input type="number" id="startHour" min="0" max="23" />
+          <label for="endHour">End Hour:</label>
+          <input type="number" id="endHour" min="0" max="23" />
+          <button id="setScheduleButton">Set Schedule</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

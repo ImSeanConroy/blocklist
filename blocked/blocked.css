@@ -1,0 +1,26 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  height: 100vh;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px
+}
+
+.container h1 {
+  font-size: 50px;
+}
+
+.container p {
+  font-size: 20px;
+  padding-bottom: 250px;
+}
