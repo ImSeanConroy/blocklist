@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Website Blocker Options</title>
+    <title>Website Block - Settings</title>
     <link rel="stylesheet" href="options.css" />
     <script src="options.js"></script>
   </head>
   <body>
     <div class="container">
-      <h1 class="display-3">Website Blocker Settings</h1>
+      <!-- <h1 class="display-3">Extension Settings</h1> -->
       <div class="card">
-        <h2>Blocked Websites</h2>
+        <h2>Block List</h2>
         <ul id="blocked-list"></ul>
-        <div class="row">
+        <div>
           <input type="text" id="siteInput" placeholder="Enter site to block" />
           <button id="blockButton">Block Site</button>
         </div>
       </div>
       <div class="card end">
-        <h2>Blocking Schedule</h2>
+        <h2>Set up Blocking Schedule</h2>
+        <h3 class="display-4">Set Time</h3>
         <div class="row">
-          <label for="startHour">Start Hour:</label>
-          <input type="number" id="startHour" min="0" max="23" />
-          <label for="endHour">End Hour:</label>
-          <input type="number" id="endHour" min="0" max="23" />
-          <button id="setScheduleButton">Set Schedule</button>
+          <input class="small" type="number" id="startHour" min="0" max="23" />
+          <p>to</p>
+          <input class="small" type="number" id="endHour" min="0" max="23" />
+          
         </div>
+        <!-- <h3 class="display-4">Select Days</h3> -->
+        <button id="setScheduleButton">Set Schedule</button>
       </div>
     </div>
   </body>

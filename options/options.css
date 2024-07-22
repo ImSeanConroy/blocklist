@@ -26,6 +26,10 @@ body {
   font-size: 36px;
 }
 
+.display-4 {
+  font-size: 18px;
+}
+
 p {
   font-size: 20px;
 }
@@ -50,7 +54,6 @@ li {
   background-color: #fff;
     width: 400px;
     border-radius: 6px;
-    overflow: hidden;
     padding: 22px;
 }
 
@@ -67,6 +70,20 @@ li {
   border: 1px solid #27272a;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+.card input .small {
+  padding: 8px;
+  margin: 12px 0;
+  border: 1px solid #27272a;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .card button {
