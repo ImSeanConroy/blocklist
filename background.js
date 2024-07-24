@@ -2,7 +2,7 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({ 
     blockedSites: [], // Add your actual blocked sites here
-    blockSchedule: { startHour: 0, endHour: 24 }  // Example block schedule
+    blockSchedule: { startHour: 9, endHour: 17 }  // Example block schedule
   });
 });
 
