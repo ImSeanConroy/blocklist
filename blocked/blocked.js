@@ -2,10 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const startHour = document.getElementById("startHour");
   const endHour = document.getElementById("endHour");
 
-  chrome.storage.sync.get(["blockSchedule"], (result) => {
-    const blockSchedule = result.blockSchedule || { startHour: 9, endHour: 17 };
+  chrome.storage.sync.get(["sites"], (result) => {
+    const blockSchedule = result.sites || { };
 
-    startHour.textContent = blockSchedule.startHour;
-    endHour.textContent = blockSchedule.endHour;
+    startHour.textContent = "Test";
+    endHour.textContent = "Test";
   });
 });

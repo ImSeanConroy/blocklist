@@ -10,23 +10,24 @@
       <!-- <h1 class="display-3">Extension Settings</h1> -->
       <div class="card">
         <h2>Block List</h2>
-        <ul id="blocked-list"></ul>
-        <div>
-          <input type="text" id="siteInput" placeholder="Enter site to block" />
-          <button id="blockButton">Block Site</button>
+        <p class="text">Block sites perminately or by a schedule.</p>
+        <div class="test">
+          <input type="text" id="siteInput" placeholder="Type something" />
+          <button id="blockButton">Block</button>
         </div>
+        <ul id="blockedList"></ul>
       </div>
-      <div class="card end">
+      <div id="menu" class="card-sm" style="display: none">
         <h2>Set up Blocking Schedule</h2>
-        <h3 class="display-4">Set Time</h3>
         <div class="row">
           <input class="small" type="number" id="startHour" min="0" max="23" />
           <p>to</p>
           <input class="small" type="number" id="endHour" min="0" max="23" />
-          
         </div>
-        <!-- <h3 class="display-4">Select Days</h3> -->
-        <button id="setScheduleButton">Set Schedule</button>
+        <div class="row">
+          <button style="flex-grow: 1">Cancel</button>
+          <button id="setScheduleButton" style="flex-grow: 1">Set Schedule</button>
+        </div>
       </div>
     </div>
   </body>

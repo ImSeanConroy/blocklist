@@ -1,68 +1,96 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const blockedList = document.getElementById('blocked-list');
-  const siteInput = document.getElementById('siteInput');
-  const blockButton = document.getElementById('blockButton');
-  const startHourInput = document.getElementById('startHour');
-  const endHourInput = document.getElementById('endHour');
-  const setScheduleButton = document.getElementById('setScheduleButton');
+// { "www.youtube.com" : { "start": 12, "end": 19 }, "www.google.com" : { "start": 12, "end": 19 }}
 
-  // Function to enable or disable the block button based on the current time and block schedule
-  function updateSetScheduleButtonState(startHour, endHour) {
-    if (isCurrentTimeBetween(startHour, endHour)) {
-      setScheduleButton.disabled = true;
-      console.log('Block button disabled during active block time.');
-    } else {
-      setScheduleButton.disabled = false;
-      console.log('Block button enabled.');
-    }
-  }
-  
-  // Function to check if current time is between start and end hours
-  function isCurrentTimeBetween(startHour, endHour) {
-    const currentHour = new Date().getHours();
-    if (startHour <= endHour) {
-      return currentHour >= startHour && currentHour < endHour;
-    } else {
-      // If startHour is greater than endHour, it's a span across midnight
-      return currentHour >= startHour || currentHour < endHour;
-    }
+document.addEventListener("DOMContentLoaded", () => {
+  const blockedList = document.getElementById("blockedList");
+  const blockButton = document.getElementById("blockButton");
+  const siteInput = document.getElementById("siteInput");
+  const menu = document.getElementById("menu");
+  const startHourInput = document.getElementById("startHour");
+  const endHourInput = document.getElementById("endHour");
+  const setScheduleButton = document.getElementById("setScheduleButton");
+
+  var selectedSite = "";
+
+  // Create favicon element with specified size
+  function createFaviconElement(site) {
+    const img = document.createElement("img");
+    img.src = `https://www.google.com/s2/favicons?domain=${site}&size=24`; // Modify if favicons are hosted elsewhere
+    img.alt = "Favicon";
+    img.style.width = "24px"; // Adjust size as needed
+    img.style.height = "24px"; // Adjust size as needed
+    img.style.marginRight = "8px"; // Space between favicon and site name
+    return img;
   }
 
-  // Load blocked sites
-  chrome.storage.sync.get(['blockedSites', 'blockSchedule'], (result) => {
-    const blockedSites = result.blockedSites || [];
-    const blockSchedule = result.blockSchedule || { startHour: 0, endHour: 24 };
-    
-    blockedSites.forEach(site => {
-      const li = document.createElement('li');
-      li.textContent = site;
-      blockedList.appendChild(li);
+  // Add element to list
+  function addElementToList(blockedList, site, siteObject) {
+    const li = document.createElement("li");
+    li.textContent = site;
+    const favicon = createFaviconElement(site); // Ensure this function exists
+
+    li.addEventListener("click", (event) => {
+      showMenu(event, site, siteObject);
     });
-    
-    startHourInput.value = blockSchedule.startHour;
-    endHourInput.value = blockSchedule.endHour;
 
-    // Update set schedule button state based on the current block schedule
-    updateSetScheduleButtonState(blockSchedule.startHour, blockSchedule.endHour);
-  });
+    li.prepend(favicon);
+    blockedList.appendChild(li);
+  }
 
   // Block site
-  blockButton.addEventListener('click', () => {
+  blockButton.addEventListener("click", () => {
     const site = siteInput.value.trim();
+    console.log("site", site)
     if (site) {
-      chrome.storage.sync.get(['blockedSites'], (result) => {
-        const blockedSites = result.blockedSites || [];
-        if (!blockedSites.includes(site)) {
-          blockedSites.push(site);
-          chrome.storage.sync.set({ blockedSites }, () => {
-            const li = document.createElement('li');
-            li.textContent = site;
-            blockedList.appendChild(li);
+
+      chrome.storage.local.get(["sites"]).then((result) => {
+        var blockedSites = result.sites || {};
+        console.log("result", result)
+
+        // Check if the site is already blocked
+        if (!blockedSites.hasOwnProperty(site)) {
+          blockedSites[site] = { startHour: 9, endHour: 17 };
+
+          // Save the updated blockedSites object
+          chrome.storage.local.set({ sites: blockedSites }).then(() => {
+            console.log("Added blockedSites:", blockedSites);
+
+            // Update the UI with the newly blocked site
+            addElementToList(blockedList, site, blockedSites[site]);
           });
         }
       });
     }
   });
+
+  // Load blocked sites
+  chrome.storage.local.get(["sites"]).then((result) => {
+    const blockedSites = result.sites || {};
+    console.log("Loaded blockedSites:", blockedSites);
+
+    // Iterate over the keys of the blockedSites object
+    Object.keys(blockedSites).forEach((site) => {
+      addElementToList(blockedList, site, blockedSites[site]);
+    });
+  });
+
+  // Create and show menu
+  function showMenu(event, site, siteObject) {
+    menu.style.display = "block";
+
+    selectedSite = site;
+    startHourInput.value = siteObject.startHour;
+    endHourInput.value = siteObject.endHour;
+
+    // Hide menu when clicking outside
+    function handleClickOutside(e) {
+      if (!menu.contains(e.target) && !event.target.contains(e.target)) {
+        menu.style.display = "none";
+        selectedSite = "";
+        document.removeEventListener("click", handleClickOutside);
+      }
+    }
+    document.addEventListener("click", handleClickOutside);
+  }
 
   // Set block schedule
   setScheduleButton.addEventListener('click', () => {
@@ -74,24 +102,18 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Invalid input for start or end hour.');
       return; // Prevent further execution if input is invalid
     }
-
+    
     // Get current block schedule from storage
-    chrome.storage.sync.get(['blockSchedule'], (result) => {
-      const currentSchedule = result.blockSchedule || { startHour: 0, endHour: 24 };
-
-      // Check if current time is between the current block schedule
-      if (isCurrentTimeBetween(currentSchedule.startHour, currentSchedule.endHour)) {
-        console.log('Cannot update schedule during active block time.');
-        return; // Prevent further execution if current time is within active block schedule
+    chrome.storage.local.get(["sites"]).then((result) => {
+      var blockedSites = result.sites || {};
+      
+      if (blockedSites.hasOwnProperty(selectedSite)) {
+        blockedSites[selectedSite] = { startHour, endHour }
+       
+        chrome.storage.local.set({ sites: blockedSites }).then(() => {
+          console.log("Updates blockedSites:", blockedSites);
+        });
       }
-
-      // Set new block schedule
-      chrome.storage.sync.set({ blockSchedule: { startHour, endHour } }, () => {
-        console.log('Block schedule set');
-
-        // Update set schedule button state based on the new block schedule
-        updateSetScheduleButtonState(startHour, endHour);
-      });
     });
   });
 });
