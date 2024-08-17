@@ -85,7 +85,7 @@ li {
 }
 
 .card-sm h2 {
-  font-size: 18px;
+  font-size: 22px;
   margin-bottom: 12px;
 }
 
@@ -103,7 +103,6 @@ li {
   border: 1px solid #e7e5e4;
   border-radius: 8px;
   box-sizing: border-box;
-  
 }
 
 .card-sm button {
@@ -140,8 +139,8 @@ li {
 }
 
 #blockedList {
-  height: 400px;
-  max-height:400px;
+  max-height: 55vh;
+  min-height: 200px;
   overflow: scroll;
 }
 

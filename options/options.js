@@ -1,5 +1,3 @@
-// { "www.youtube.com" : { "start": 12, "end": 19 }, "www.google.com" : { "start": 12, "end": 19 }}
-
 document.addEventListener("DOMContentLoaded", () => {
   const blockedList = document.getElementById("blockedList");
   const blockButton = document.getElementById("blockButton");
@@ -42,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("site", site)
     if (site) {
 
-      chrome.storage.local.get(["sites"]).then((result) => {
+      chrome.storage.sync.get(["sites"]).then((result) => {
         var blockedSites = result.sites || {};
         console.log("result", result)
 
@@ -51,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
           blockedSites[site] = { startHour: 9, endHour: 17 };
 
           // Save the updated blockedSites object
-          chrome.storage.local.set({ sites: blockedSites }).then(() => {
+          chrome.storage.sync.set({ sites: blockedSites }).then(() => {
             console.log("Added blockedSites:", blockedSites);
 
             // Update the UI with the newly blocked site
@@ -63,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Load blocked sites
-  chrome.storage.local.get(["sites"]).then((result) => {
+  chrome.storage.sync.get(["sites"]).then((result) => {
     const blockedSites = result.sites || {};
     console.log("Loaded blockedSites:", blockedSites);
 
@@ -104,13 +102,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     // Get current block schedule from storage
-    chrome.storage.local.get(["sites"]).then((result) => {
+    chrome.storage.sync.get(["sites"]).then((result) => {
       var blockedSites = result.sites || {};
       
       if (blockedSites.hasOwnProperty(selectedSite)) {
         blockedSites[selectedSite] = { startHour, endHour }
        
-        chrome.storage.local.set({ sites: blockedSites }).then(() => {
+        chrome.storage.sync.set({ sites: blockedSites }).then(() => {
           console.log("Updates blockedSites:", blockedSites);
         });
       }

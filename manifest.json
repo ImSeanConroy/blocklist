@@ -17,5 +17,8 @@
       "js": ["content.js"]
     }
   ],
-  "options_page": "options/options.html"
+  "options_page": "options/options.html",
+  "host_permissions": [
+    "<all_urls>"
+  ]
 }
