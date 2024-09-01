@@ -6,8 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const startHourInput = document.getElementById("startHour");
   const endHourInput = document.getElementById("endHour");
   const setScheduleButton = document.getElementById("setScheduleButton");
+  const cancelButton = document.getElementById("cancelButton");
 
   var selectedSite = "";
+  let isMenuOpen = false;
 
   // Create favicon element with specified size
   function createFaviconElement(site) {
@@ -21,13 +23,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Add element to list
-  function addElementToList(blockedList, site, siteObject) {
+  function addElementToList(blockedList, site) {
     const li = document.createElement("li");
     li.textContent = site;
     const favicon = createFaviconElement(site); // Ensure this function exists
 
     li.addEventListener("click", (event) => {
-      showMenu(event, site, siteObject);
+      showMenu(event, site);
     });
 
     li.prepend(favicon);
@@ -37,12 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Block site
   blockButton.addEventListener("click", () => {
     const site = siteInput.value.trim();
-    console.log("site", site)
+    
     if (site) {
-
       chrome.storage.sync.get(["sites"]).then((result) => {
         var blockedSites = result.sites || {};
-        console.log("result", result)
 
         // Check if the site is already blocked
         if (!blockedSites.hasOwnProperty(site)) {
@@ -50,10 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Save the updated blockedSites object
           chrome.storage.sync.set({ sites: blockedSites }).then(() => {
-            console.log("Added blockedSites:", blockedSites);
-
-            // Update the UI with the newly blocked site
-            addElementToList(blockedList, site, blockedSites[site]);
+            addElementToList(blockedList, site);
           });
         }
       });
@@ -63,8 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load blocked sites
   chrome.storage.sync.get(["sites"]).then((result) => {
     const blockedSites = result.sites || {};
-    console.log("Loaded blockedSites:", blockedSites);
-
     // Iterate over the keys of the blockedSites object
     Object.keys(blockedSites).forEach((site) => {
       addElementToList(blockedList, site, blockedSites[site]);
@@ -72,22 +67,36 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Create and show menu
-  function showMenu(event, site, siteObject) {
+  function showMenu(event, site) {
     menu.style.display = "block";
-
     selectedSite = site;
-    startHourInput.value = siteObject.startHour;
-    endHourInput.value = siteObject.endHour;
+    isMenuOpen = true;
+    event.target.classList.add("selected");
 
-    // Hide menu when clicking outside
+    // Populate start and end hour inputs with the site's stored data
+    chrome.storage.sync.get(["sites"]).then((result) => {
+      const blockedSites = result.sites || {};
+      startHourInput.value = blockedSites[site].startHour;
+      endHourInput.value = blockedSites[site].endHour;
+    });
+
+    // Function to handle clicks outside the menu, which will close the menu
     function handleClickOutside(e) {
-      if (!menu.contains(e.target) && !event.target.contains(e.target)) {
-        menu.style.display = "none";
-        selectedSite = "";
-        document.removeEventListener("click", handleClickOutside);
-      }
+      if (e.target.contains(cancelButton) || !menu.contains(e.target) && !event.target.contains(e.target)) {
+        if (!blockedList.contains(e.target)) {
+          closeMenu()
+        }
+        event.target.classList.remove("selected");
+      }  
     }
     document.addEventListener("click", handleClickOutside);
+
+    function closeMenu() {
+      menu.style.display = "none";
+      selectedSite = "";
+      isMenuOpen = false;
+      document.removeEventListener("click", handleClickOutside);
+    }
   }
 
   // Set block schedule
@@ -107,10 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (blockedSites.hasOwnProperty(selectedSite)) {
         blockedSites[selectedSite] = { startHour, endHour }
-       
-        chrome.storage.sync.set({ sites: blockedSites }).then(() => {
-          console.log("Updates blockedSites:", blockedSites);
-        });
+        chrome.storage.sync.set({ sites: blockedSites })
       }
     });
   });

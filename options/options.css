@@ -57,6 +57,25 @@ li {
   padding-bottom: 8px;
 }
 
+button {
+  border: 0px;
+  display: inline-block;
+  background-color: #27272a;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+button:hover {
+  background-color: #3f3f46;
+  cursor: pointer;
+}
+
+.card-sm button {
+  margin-top: 16px;
+}
+
 .end {
   margin-bottom: 100px;
 }
@@ -72,10 +91,11 @@ li {
 
 .card-sm {
   background-color: #fff;
-  width: 300px;
+  width: 310px;
   border-radius: 18px;
   padding: 36px 42px;
   display: flex;
+  line-height: 24px;
 }
 
 .card h2 {
@@ -103,25 +123,6 @@ li {
   border: 1px solid #e7e5e4;
   border-radius: 8px;
   box-sizing: border-box;
-}
-
-.card-sm button {
-  display: inline-block;
-  background-color: #27272a;
-  color: #fff;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  margin-top: 16px;
-}
-
-.card button {
-  display: inline-block;
-  background-color: #27272a;
-  color: #fff;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 8px;
 }
 
 .card input .small {
@@ -160,15 +161,19 @@ li {
   cursor: pointer;
 }
 
+#blockedList li:hover {
+  background-color: #fafafa; /* Hover background color */
+}
+
+/* Define the selected class */
+#blockedList li.selected {
+  background-color: #fafafa; /* Selected background color */
+}
+
 #blockedList li img {
   border: 1px solid #f5f5f5;
   border-radius: 8px;
   padding: 8px 10px;
-}
-
-.card button:hover {
-  background-color: #3f3f46;
-  cursor: pointer;
 }
 
 .container p, .container li, .container label {
