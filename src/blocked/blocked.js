@@ -1,23 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-  chrome.storage.sync.get(["sites"], (result) => {
-    const blockedSites = result.sites || {};
-    console.log(result);
-    console.log(blockedSites);
-  });
-  // const startHour = document.getElementById("startHour");
-  // const endHour = document.getElementById("endHour");
+  const params = new URLSearchParams(window.location.search);
+  const site = params.get("site");
+  const start = params.get("start");
+  const end = params.get("end");
 
-  // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-  //   const currentTab = tabs[0];
-  //   const currentUrl = currentTab.url;
-
-  //   chrome.storage.sync.get(["sites"], (result) => {
-  //     const blockedSites = result.sites || {};
-
-  //     const blockSchedule = blockedSites[currentUrl];
-
-  //     startHour.textContent = blockSchedule.startHour;
-  //     endHour.textContent = blockSchedule.endHour;
-  //   });
-  // });
+  if (site && start && end) {
+    document.getElementById("site").textContent = site;
+    document.getElementById("start").textContent = start;
+    document.getElementById("end").textContent = end;
+  }
 });

@@ -19,7 +19,10 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
       blockedSites.hasOwnProperty(url.hostname) &&
       isWithinBlockTime(blockedSites[url.hostname])
     ) {
-      chrome.tabs.update(details.tabId, { url: "blocked/blocked.html" });
+      const site = blockedSites[url.hostname];
+      chrome.tabs.update(details.tabId, {
+        url: `blocked/blocked.html?site=${url.hostname}&start=${site.startHour}&end=${site.endHour}`,
+      });
     }
   });
 });
