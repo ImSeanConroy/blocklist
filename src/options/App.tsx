@@ -69,7 +69,7 @@ function App() {
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Type something"
+            placeholder="Type Something..."
           />
           <button onClick={handleSubmit}>Block</button>
         </div>
