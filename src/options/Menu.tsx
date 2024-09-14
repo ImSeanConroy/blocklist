@@ -1,4 +1,6 @@
+import React from 'react';
 import { useState, useEffect } from "react";
+import "./Menu.css"
 
 const Menu = ({
   selectedItem,
@@ -51,8 +53,7 @@ const Menu = ({
 
   return (
     <div
-      className="card-sm"
-      style={{ display: "flex", flexDirection: "column" }}
+      className="menu"
     >
       <h2>Set up Blocking Schedule</h2>
       <p className="text" style={{ paddingBottom: "16px" }}>

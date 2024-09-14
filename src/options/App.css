@@ -47,16 +47,6 @@ p {
   font-size: 20px;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin-bottom: 0;
-}
-
-li {
-  padding-bottom: 8px;
-}
-
 button {
   border: 0px;
   display: inline-block;
@@ -72,10 +62,6 @@ button:hover {
   cursor: pointer;
 }
 
-.card-sm button {
-  margin-top: 16px;
-}
-
 .end {
   margin-bottom: 100px;
 }
@@ -89,37 +75,15 @@ button:hover {
   padding: 36px 42px;
 }
 
-.card-sm {
-  background-color: #fff;
-  width: 310px;
-  border-radius: 18px;
-  padding: 36px 42px;
-  display: flex;
-  line-height: 24px;
-}
-
 .card h2 {
   margin-top: 0;
   margin-bottom: 12px;
   font-size: 34px;
 }
 
-.card-sm h2 {
-  font-size: 22px;
-  margin-bottom: 12px;
-}
-
 .card input {
   flex-grow: 1;
   padding: 12px 14px;
-  border: 1px solid #e7e5e4;
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
-.card-sm input {
-  flex-grow: 1;
-  padding: 8px 12px;
   border: 1px solid #e7e5e4;
   border-radius: 8px;
   box-sizing: border-box;
@@ -140,6 +104,9 @@ button:hover {
 }
 
 ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 0;
   max-height: 55vh;
   min-height: 200px;
   overflow: scroll;
@@ -149,47 +116,10 @@ ul::-webkit-scrollbar {
   display: none;
 }
 
-ul li {
-  border: 1px solid #f5f5f5;
-  border-radius: 8px;
-  padding: 12px 14px;
-  margin: 0 0 10px 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 15px;
-  cursor: pointer;
-}
-
-ul li:hover {
-  background-color: #fafafa; /* Hover background color */
-}
-
-/* Define the selected class */
-ul li.selected {
-  background-color: #fafafa; /* Selected background color */
-}
-
-ul li img {
-  border: 1px solid #f5f5f5;
-  border-radius: 8px;
-  padding: 8px 10px;
-}
-
 .container p, .container li, .container label {
   font-size: 16px;
 }
 
 .container input, .container button {
   font-size: 15px;
-}
-
-.row.week {
-  gap: 10px;
-}
-
-.week button {
-  font-size: 12px;
-  padding: 10px 14px;
-  margin-top: 0;
 }

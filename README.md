@@ -1,4 +1,4 @@
-# Website Blocker - 
+# Website Blocker
 
 Stay Focused and Efficient. A simple Chrome extension that helps you stay productive by blocking distracting websites during specific times. Control your browsing habits and stay focused on what matters!
 

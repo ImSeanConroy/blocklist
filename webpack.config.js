@@ -1,42 +1,40 @@
 const path = require("path");
 const HTMLPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin")
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: {
-        index: "./src/index.tsx"
+        index: "./src/options/index.tsx",
     },
     mode: "production",
     module: {
         rules: [
             {
-              test: /\.tsx?$/,
-               use: [
-                 {
-                  loader: "ts-loader",
-                   options: {
-                     compilerOptions: { noEmit: false },
-                    }
-                  }],
-               exclude: /node_modules/,
+                test: /\.tsx?$/,
+                use: [
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            compilerOptions: { noEmit: false },
+                        },
+                    },
+                ],
+                exclude: /node_modules/,
             },
             {
-              exclude: /node_modules/,
-              test: /\.css$/i,
-               use: [
-                  "style-loader",
-                  "css-loader"
-               ]
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
+                exclude: /node_modules/,
             },
         ],
     },
     plugins: [
         new CopyPlugin({
             patterns: [
-                { from: "manifest.json", to: "../manifest.json" },
-                { from: "background.js", to: "../background.js" },
-                { from: "content.js", to: "../content.js" },
-                { from: "blocked", to: "../blocked" },
+                { from: "public/manifest.json", to: "../manifest.json" },
+                { from: "src/background/background.js", to: "../background.js" },
+                { from: "src/content/content.js", to: "../content.js" },
+                { from: "src/blocked", to: "../blocked" },
             ],
         }),
         ...getHtmlPlugins(["index"]),
