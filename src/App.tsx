@@ -39,10 +39,7 @@ function App() {
           // Save the updated blockedSites object
           chrome.storage.sync.set({ sites: blockedSites }).then(() => {
             setItems([...items, inputValue.trim()]);
-            console.log(`Blocked ${site}`);
           });
-        } else {
-          console.log(`${site} is already blocked.`);
         }
       });
       setInputValue("");
@@ -51,7 +48,6 @@ function App() {
 
   // Handle clicking a list item
   const handleItemClick = (item: string) => {
-    console.log("CLICKES");
     setSelectedItem(item); // Set the clicked item as the selected item]
     setIsSidebarOpen(true); // Show the sidebar
   };
@@ -82,6 +78,7 @@ function App() {
               key={index}
               index={index}
               item={item}
+              selectedItem={selectedItem}
               onClick={() => handleItemClick(item)}
             />
           ))}

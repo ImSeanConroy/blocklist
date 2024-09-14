@@ -13,28 +13,28 @@ Before getting started, ensure you have the following installed:
 
 1. **Clone the repository:**
 
-   ```bash
-   git clone https://github.com/imseanconroy/website-blocking-extension.git
-   cd website-blocking-extension
-   ```
+```bash
+git clone https://github.com/imseanconroy/website-blocking-extension.git
+cd website-blocking-extension
+```
 
 2. **Install dependencies:**
 
-   Inside the project directory, run:
+Inside the project directory, run:
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
 3. **Build the extension:**
 
-   Use the following command to build the project with Webpack:
+Use the following command to build the project with Webpack:
 
-   ```bash
-   npm run build
-   ```
+```bash
+npm run build
+```
 
-   This will generate the required files in the `dist/` folder.
+This will generate the required files in the `dist/` folder.
 
 ### Load the Extension in Chrome
 
@@ -55,9 +55,9 @@ To make modifications and see changes in real-time:
 
 1. Run the following command to watch for changes and rebuild automatically:
 
-   ```bash
-   npm run build:watch
-   ```
+```bash
+npm run watch
+```
 
 2. Reload the extension in Chrome by going to `chrome://extensions/` and clicking the reload button next to the extension.
 
@@ -74,7 +74,3 @@ This project is Distributed under the MIT License - see the [LICENSE.md](LICENSE
 ## Support
 
 If you are having problems, please let me know by [raising a new issue](https://github.com/ImSeanConroy/website-blocking-extension/issues/new/choose).
-
----
-
-This README gives users a clear overview of how to install, build, and use the extension while providing useful information for developers interested in contributing.
