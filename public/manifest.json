@@ -1,8 +1,13 @@
 {
-  "manifest_version": 3,
-  "name": "Website Blocker",
-  "description": "Stay focused and efficient while browsing the web.",
   "version": "0.1",
+  "manifest_version": 3,
+  "name": "BlockList: Block Websites & Stay Focused.",
+  "description": "Stay focused and efficient while browsing the web.",
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
   "permissions": [
     "storage",
     "activeTab",

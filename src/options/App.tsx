@@ -62,7 +62,7 @@ function App() {
   return (
     <>
       <div className="card">
-        <h2>Block List</h2>
+        <h2>BlockList</h2>
         <p className="text">Block sites perminately or by a schedule.</p>
         <div className="test">
           <input

@@ -31,6 +31,7 @@ module.exports = {
     plugins: [
         new CopyPlugin({
             patterns: [
+                { from: "public/icons", to: "../icons" },
                 { from: "public/manifest.json", to: "../manifest.json" },
                 { from: "src/background/background.js", to: "../background.js" },
                 { from: "src/content/content.js", to: "../content.js" },
@@ -52,7 +53,7 @@ function getHtmlPlugins(chunks) {
     return chunks.map(
         (chunk) =>
             new HTMLPlugin({
-                title: "React extension",
+                title: "BlockList - Settings",
                 filename: `${chunk}.html`,
                 chunks: [chunk],
             })
