@@ -1,6 +1,6 @@
-# Website Blocker
+# BlockList: Block Websites & Stay Focused
 
-Stay Focused and Efficient. A simple Chrome extension that helps you stay productive by blocking distracting websites during specific times. Control your browsing habits and stay focused on what matters!
+Stay focused and efficient while browsing the web. A simple Chrome extension that helps you stay productive by blocking distracting websites during specific times. Control your browsing habits and stay focused on what matters!
 
 ## Getting Started
 

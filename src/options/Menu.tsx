@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import { useState, useEffect } from "react";
-import "./Menu.css"
+import "./Menu.css";
 
 const Menu = ({
   selectedItem,
@@ -21,7 +21,7 @@ const Menu = ({
         setEndTime(blockedSites[selectedItem].endHour);
       }
     });
-  }, []);
+  }, [selectedItem]);
 
   const handleSubmit = () => {
     const startHour = parseInt(startTime);
@@ -47,19 +47,15 @@ const Menu = ({
         chrome.storage.sync.set({ sites: blockedSites });
       }
 
-      closeMenu()
+      closeMenu();
     });
   };
 
   return (
-    <div
-      className="menu"
-    >
+    <div className="menu">
       <h2>Set up Blocking Schedule</h2>
-      <p className="text" style={{ paddingBottom: "16px" }}>
-        Blocked between the following times:
-      </p>
-      <div className="row">
+      <p className="text">Blocked between the following times:</p>
+      <div className="menu-row">
         <input
           className="small"
           value={startTime}
@@ -78,7 +74,7 @@ const Menu = ({
           max="23"
         />
       </div>
-      <div className="row">
+      <div className="menu-row">
         <button style={{ flexGrow: 1 }} onClick={() => closeMenu()}>
           Cancel
         </button>

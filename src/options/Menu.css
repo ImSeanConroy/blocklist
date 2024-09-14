@@ -1,11 +1,11 @@
 .menu {
   background-color: #fff;
-  width: 310px;
   border-radius: 18px;
-  padding: 36px 42px;
   display: flex;
   flex-direction: column;
   line-height: 24px;
+  width: 310px;
+  padding: 36px 42px;
 }
 
 .menu button {
@@ -18,15 +18,15 @@
 }
 
 .menu input {
-  flex-grow: 1;
-  padding: 8px 12px;
   border: 1px solid #e7e5e4;
   border-radius: 8px;
   box-sizing: border-box;
+  flex-grow: 1;
+  padding: 6px 12px 8px ;
 }
 
 .menu-row {
-  display: flex;
   align-items: center;
+  display: flex;
   gap: 15px;
 }

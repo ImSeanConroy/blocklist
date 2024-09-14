@@ -16,9 +16,10 @@ const ListItem = ({
     <li
       key={index}
       onClick={onClick}
-      className={"list_item" + (selectedItem === item ? " selected" : "")}
+      className={"border list_item" + (selectedItem === item ? " selected" : "")}
     >
       <img
+        className="border"
         src={`https://www.google.com/s2/favicons?domain=${item}&size=24`}
         alt="Favicon"
       />

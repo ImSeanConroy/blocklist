@@ -1,60 +1,30 @@
 * {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 body {
-  height: 100vh;
   background-color: #f4f4f5;
   color: #27272a;
-}
-
-.text {
-  color: #a3a3a3;
-  padding: 0 0 10px 0;
-}
-
-.test {
-  display: flex;
-  flex-direction: row;
-  justify-items: center;
-  gap: 15px;
-  margin: 12px 0 18px;
-}
-
-.container {
   height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 36px;
 }
 
-.display-1 {
-  font-size: 50px;
+p, li, label {
+  font-size: 16px;
 }
 
-.display-3 {
-  font-size: 36px;
-}
-
-.display-4 {
-  font-size: 18px;
-}
-
-p {
-  font-size: 20px;
+input, button {
+  font-size: 15px;
 }
 
 button {
-  border: 0px;
-  display: inline-block;
   background-color: #27272a;
-  color: #fff;
-  text-decoration: none;
-  padding: 8px 16px;
+  border: 0px;
   border-radius: 8px;
+  color: #fff;
+  display: inline-block;
+  padding: 8px 16px;
+  text-decoration: none;
 }
 
 button:hover {
@@ -62,64 +32,58 @@ button:hover {
   cursor: pointer;
 }
 
-.end {
-  margin-bottom: 100px;
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  justify-content: center;
+  gap: 36px;
 }
 
-/* ===================== */
+.list-container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-items: center;
+  margin: 4px 0 18px;
+}
+
+.text {
+  color: #a3a3a3;
+  padding: 0 0 12px 0;
+}
 
 .card {
   background-color: #fff;
-  width: 500px;
   border-radius: 18px;
   padding: 36px 42px;
+  width: 500px;
 }
 
 .card h2 {
+  font-size: 34px;
   margin-top: 0;
   margin-bottom: 12px;
-  font-size: 34px;
 }
 
 .card input {
-  flex-grow: 1;
-  padding: 12px 14px;
   border: 1px solid #e7e5e4;
   border-radius: 8px;
   box-sizing: border-box;
-}
-
-.card input .small {
-  padding: 8px;
-  margin: 12px 0;
-  border: 1px solid #27272a;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  flex-grow: 1;
+  padding: 12px 14px;
 }
 
 ul {
   list-style-type: none;
-  padding: 0;
   margin-bottom: 0;
   max-height: 55vh;
   min-height: 200px;
+  padding: 0;
   overflow: scroll;
 }
 
 ul::-webkit-scrollbar {
   display: none;
-}
-
-.container p, .container li, .container label {
-  font-size: 16px;
-}
-
-.container input, .container button {
-  font-size: 15px;
 }

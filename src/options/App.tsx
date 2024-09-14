@@ -64,7 +64,7 @@ function App() {
       <div className="card">
         <h2>BlockList</h2>
         <p className="text">Block sites perminately or by a schedule.</p>
-        <div className="test">
+        <div className="list-container">
           <input
             type="text"
             value={inputValue}
