@@ -139,17 +139,17 @@ button:hover {
   gap: 15px;
 }
 
-#blockedList {
+ul {
   max-height: 55vh;
   min-height: 200px;
   overflow: scroll;
 }
 
-#blockedList::-webkit-scrollbar {
+ul::-webkit-scrollbar {
   display: none;
 }
 
-#blockedList li {
+ul li {
   border: 1px solid #f5f5f5;
   border-radius: 8px;
   padding: 12px 14px;
@@ -161,16 +161,16 @@ button:hover {
   cursor: pointer;
 }
 
-#blockedList li:hover {
+ul li:hover {
   background-color: #fafafa; /* Hover background color */
 }
 
 /* Define the selected class */
-#blockedList li.selected {
+ul li.selected {
   background-color: #fafafa; /* Selected background color */
 }
 
-#blockedList li img {
+ul li img {
   border: 1px solid #f5f5f5;
   border-radius: 8px;
   padding: 8px 10px;
@@ -182,4 +182,14 @@ button:hover {
 
 .container input, .container button {
   font-size: 15px;
+}
+
+.row.week {
+  gap: 10px;
+}
+
+.week button {
+  font-size: 12px;
+  padding: 10px 14px;
+  margin-top: 0;
 }
