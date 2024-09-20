@@ -15,6 +15,11 @@ export default defineConfig({
       ],
     }),
   ],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/options/__tests__/setupTests.ts',
+  },
   build: {
     outDir: "dist",
     rollupOptions: {
