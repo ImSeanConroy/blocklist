@@ -16,9 +16,19 @@ export default defineConfig({
     }),
   ],
   test: {
-    environment: 'jsdom',
+    environment: "jsdom",
     globals: true,
-    setupFiles: './src/options/__tests__/setupTests.ts',
+    setupFiles: "./src/options/__tests__/setupTests.ts",
+    coverage: {
+      include: ["src/options"],
+      exclude: [
+        "src/options/__tests__/**",
+        "src/options/index.tsx",
+        "src/options/vite-env.d.ts",
+        "src/*.test.{js,ts,jsx,tsx}",
+        "dist",
+      ],
+    },
   },
   build: {
     outDir: "dist",

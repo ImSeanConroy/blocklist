@@ -2,7 +2,7 @@
 
 Stay focused and efficient while browsing the web. A simple Chrome extension that helps you stay productive by blocking distracting websites during specific times. Control your browsing habits and stay focused on what matters!
 
-![Project Image](https://github.com/ImSeanConroy/blocklist-chrome-extension/blob/main/repo-img.png)
+![Project Image](https://github.com/ImSeanConroy/blocklist/blob/main/repo-img.png)
 
 ## Getting Started
 
@@ -16,8 +16,8 @@ Before getting started, ensure you have the following installed:
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/imseanconroy/blocklist-chrome-extension.git
-cd blocklist-chrome-extension
+git clone https://github.com/imseanconroy/blocklist.git
+cd blocklist
 ```
 
 2. **Install dependencies:**
@@ -63,6 +63,13 @@ npm run watch
 
 2. Reload the extension in Chrome by going to `chrome://extensions/` and clicking the reload button next to the extension.
 
+## Testing
+
+Use the following command to run all tests:
+```bash
+npm run test
+```
+
 ## Features
 - Block specific websites during designated hours.
 - Customizable time intervals for each blocked website.
@@ -75,4 +82,4 @@ This project is Distributed under the MIT License - see the [LICENSE](LICENSE) f
 
 ## Support
 
-If you are having problems, please let me know by [raising a new issue](https://github.com/ImSeanConroy/blocklist-chrome-extension/issues/new/choose).
+If you are having problems, please let me know by [raising a new issue](https://github.com/ImSeanConroy/blocklist/issues/new/choose).
