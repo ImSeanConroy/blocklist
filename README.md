@@ -2,7 +2,7 @@
 
 Stay focused and efficient while browsing the web. A simple Chrome extension that helps you stay productive by blocking distracting websites during specific times. Control your browsing habits and stay focused on what matters!
 
-![Project Image](https://github.com/ImSeanConroy/blocklist/blob/main/repo-img.png)
+![Project Image](https://github.com/ImSeanConroy/blocklist/blob/main/.github/repo-img.png)
 
 ## Getting Started
 
