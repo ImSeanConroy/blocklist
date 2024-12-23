@@ -4,6 +4,16 @@ Stay focused and efficient while browsing the web. A simple Chrome extension tha
 
 ![Project Image](https://github.com/ImSeanConroy/blocklist/blob/main/.github/repo-img.png)
 
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Development](#development)
+- [Testing](#testing)
+- [Features](#features)
+- [License](#license)
+- [Support](#support)
+
 ## Getting Started
 
 ### Prerequisites
