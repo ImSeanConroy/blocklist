@@ -1,7 +1,7 @@
 // Initialize blocked sites and schedule on extension install
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
-    sites: {}, // Add your actual blocked sites here
+    sites: {}, // format: { "example.com": { startHour: 9, endHour: 17 } }
   });
 });
 
@@ -10,22 +10,30 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
   chrome.storage.sync.get(["sites"], (result) => {
     const blockedSites = result.sites || {};
     const url = new URL(details.url);
+    const hostname = url.hostname;
 
-    // console.log(`Navigating to: ${url.hostname}`);  // Debugging: Log the hostname
-    // console.log(`Blocked sites: ${blockedSites}`);  // Debugging: Log blocked sites list
-
-    if (
-      details.frameId === 0 &&
-      blockedSites.hasOwnProperty(url.hostname) &&
-      isWithinBlockTime(blockedSites[url.hostname])
-    ) {
-      const site = blockedSites[url.hostname];
-      chrome.tabs.update(details.tabId, {
-        url: `blocked/blocked.html?site=${url.hostname}&start=${site.startHour}&end=${site.endHour}`,
-      });
+    for (const domain in blockedSites) {
+      if (
+        details.frameId === 0 &&
+        isDomainMatch(hostname, domain) &&
+        isWithinBlockTime(blockedSites[domain])
+      ) {
+        const site = blockedSites[domain];
+        chrome.tabs.update(details.tabId, {
+          url: `blocked/blocked.html?site=${domain}&start=${site.startHour}&end=${site.endHour}`,
+        });
+        break;
+      }
     }
   });
 });
+
+// Check if a hostname belongs to a blocked domain
+function isDomainMatch(hostname, domain) {
+  return (
+    hostname === domain || hostname.endsWith("." + domain)
+  );
+}
 
 // Function to check if the current time is within the blocking schedule
 function isWithinBlockTime(blockSchedule) {

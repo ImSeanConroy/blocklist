@@ -39,7 +39,7 @@ const Menu = ({
     }
 
     chrome.storage.sync.get(["sites"]).then((result) => {
-      var blockedSites = result.sites || {};
+      const blockedSites = result.sites || {};
 
       if (blockedSites.hasOwnProperty(selectedItem)) {
         blockedSites[selectedItem] = { startHour, endHour };
