@@ -319,7 +319,7 @@ function App() {
           </CardHeader>
 
           <CardContent className="pt-4">
-            <ul className="max-h-[56vh] space-y-3 overflow-auto pr-1">
+            <ul className="space-y-3 overflow-auto pr-1">
               {visibleEntries.length === 0 && (
                 <li className="rounded-md border border-dashed border-zinc-300 p-4 text-center text-sm text-zinc-500">
                   No domains match this filter.

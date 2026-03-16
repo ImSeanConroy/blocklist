@@ -2,6 +2,7 @@ const DEFAULT_RULE = {
   startHour: 9,
   endHour: 17,
   enabled: true,
+  days: [0, 1, 2, 3, 4, 5, 6],
 };
 
 let cachedSites = {};
@@ -101,6 +102,10 @@ function getHostname(url) {
 function normalizeRule(ruleValue) {
   const startHour = normalizeHour(ruleValue?.startHour, DEFAULT_RULE.startHour);
   const endHour = normalizeHour(ruleValue?.endHour, DEFAULT_RULE.endHour);
+  const rawDays = ruleValue?.days;
+  const days = Array.isArray(rawDays)
+    ? rawDays.filter((d) => typeof d === "number" && d >= 0 && d <= 6)
+    : DEFAULT_RULE.days;
 
   return {
     startHour,
@@ -109,6 +114,7 @@ function normalizeRule(ruleValue) {
       typeof ruleValue?.enabled === "boolean"
         ? ruleValue.enabled
         : DEFAULT_RULE.enabled,
+    days: days.length > 0 ? days : DEFAULT_RULE.days,
   };
 }
 
@@ -175,7 +181,18 @@ function isDomainMatch(hostname, domainPattern) {
 }
 
 function isWithinBlockTime(blockSchedule) {
-  const currentHour = new Date().getHours();
+  const now = new Date();
+  const currentDay = now.getDay();
+  const currentHour = now.getHours();
+
+  const activeDays = Array.isArray(blockSchedule?.days) && blockSchedule.days.length > 0
+    ? blockSchedule.days
+    : DEFAULT_RULE.days;
+
+  if (!activeDays.includes(currentDay)) {
+    return false;
+  }
+
   const startHour = normalizeHour(blockSchedule?.startHour, DEFAULT_RULE.startHour);
   const endHour = normalizeHour(blockSchedule?.endHour, DEFAULT_RULE.endHour);
 

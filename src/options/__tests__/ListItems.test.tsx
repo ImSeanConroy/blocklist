@@ -7,12 +7,14 @@ const activeRule: SiteRule = {
   startHour: 0,
   endHour: 0,
   enabled: true,
+  days: [0, 1, 2, 3, 4, 5, 6],
 };
 
 const pausedRule: SiteRule = {
   startHour: 9,
   endHour: 17,
   enabled: false,
+  days: [0, 1, 2, 3, 4, 5, 6],
 };
 
 describe("ListItem component", () => {

@@ -49,6 +49,14 @@ describe("siteUtils", () => {
       expect(isWithinSchedule(rule, new Date("2026-03-16T05:00:00"))).toBe(true);
       expect(isWithinSchedule(rule, new Date("2026-03-16T13:00:00"))).toBe(false);
     });
+
+    it("respects day-of-week restrictions", () => {
+      // 2026-03-16 is a Monday (day 1)
+      const weekdayRule = { startHour: 9, endHour: 17, enabled: true, days: [1, 2, 3, 4, 5] };
+      expect(isWithinSchedule(weekdayRule, new Date("2026-03-16T10:00:00"))).toBe(true);
+      // 2026-03-15 is a Sunday (day 0) — not in days
+      expect(isWithinSchedule(weekdayRule, new Date("2026-03-15T10:00:00"))).toBe(false);
+    });
   });
 
   describe("normalizeStoredSites", () => {
@@ -61,6 +69,7 @@ describe("siteUtils", () => {
         startHour: 8,
         endHour: 20,
         enabled: true,
+        days: [0, 1, 2, 3, 4, 5, 6],
       });
     });
 

@@ -21,7 +21,18 @@ export function sanitizeRule(value: unknown): SiteRule {
     startHour: normalizeHour(asObject.startHour, DEFAULT_RULE.startHour),
     endHour: normalizeHour(asObject.endHour, DEFAULT_RULE.endHour),
     enabled: typeof asObject.enabled === "boolean" ? asObject.enabled : DEFAULT_RULE.enabled,
+    days: sanitizeDays(asObject.days),
   };
+}
+
+function sanitizeDays(value: unknown): number[] {
+  if (Array.isArray(value)) {
+    const valid = (value as unknown[]).filter(
+      (d): d is number => typeof d === "number" && Number.isInteger(d) && d >= 0 && d <= 6,
+    );
+    if (valid.length > 0) return valid.sort((a, b) => a - b);
+  }
+  return DEFAULT_RULE.days!;
 }
 
 function sanitizeSiteKey(value: string): string {
@@ -74,21 +85,41 @@ export function formatHour(hour: number): string {
   return String(hour).padStart(2, "0");
 }
 
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 export function formatSchedule(rule: SiteRule): string {
+  let hourStr: string;
+
   if (rule.startHour === rule.endHour) {
-    return "Always blocked";
+    hourStr = "Always blocked";
+  } else {
+    const base = `${formatHour(rule.startHour)}:00 to ${formatHour(rule.endHour)}:00`;
+    hourStr = rule.startHour > rule.endHour ? `${base} (overnight)` : base;
   }
 
-  const base = `${formatHour(rule.startHour)}:00 to ${formatHour(rule.endHour)}:00`;
+  const days = rule.days !== undefined && rule.days.length > 0
+    ? [...rule.days].sort((a, b) => a - b)
+    : [0, 1, 2, 3, 4, 5, 6];
 
-  if (rule.startHour > rule.endHour) {
-    return `${base} (overnight)`;
+  let dayStr = "";
+  if (days.length < 7) {
+    const isWeekdays = days.length === 5 && [1, 2, 3, 4, 5].every((d) => days.includes(d));
+    const isWeekends = days.length === 2 && days.includes(0) && days.includes(6);
+    if (isWeekdays) dayStr = " · Weekdays";
+    else if (isWeekends) dayStr = " · Weekends";
+    else dayStr = " · " + days.map((d) => DAY_NAMES[d]).join(", ");
   }
 
-  return base;
+  return hourStr + dayStr;
 }
 
 export function isWithinSchedule(rule: SiteRule, date: Date = new Date()): boolean {
+  const activeDays = rule.days !== undefined && rule.days.length > 0 ? rule.days : [0, 1, 2, 3, 4, 5, 6];
+
+  if (!activeDays.includes(date.getDay())) {
+    return false;
+  }
+
   const currentHour = date.getHours();
 
   if (rule.startHour === rule.endHour) {
