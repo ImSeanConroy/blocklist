@@ -1,6 +1,6 @@
 # BlockList: Block Websites & Stay Focused
 
-Stay focused and efficient while browsing the web. A simple Chrome extension that helps you stay productive by blocking distracting websites during specific times. Control your browsing habits and stay focused on what matters!
+Stay focused and efficient while browsing the web. Block distracting domains with always-on or scheduled rules, pause domains without deleting them, and back up your list with one click.
 
 ![Project Image](https://github.com/ImSeanConroy/blocklist/blob/main/.github/repo-img.png)
 
@@ -40,7 +40,7 @@ npm install
 
 3. **Build the extension:**
 
-Use the following command to build the project with Webpack:
+Use the following command to build the extension bundle:
 
 ```bash
 npm run build
@@ -57,21 +57,25 @@ This will generate the required files in the `dist/` folder.
 
 ## Usage
 
-1. Click the extension icon in your browser to open the settings page.
-2. Add the websites you want to block and specify the time range during which you want them blocked.
-3. Save your settings, and the extension will handle the rest!
+1. Open extension options and add domains such as `example.com` or wildcard patterns like `*.news.com`.
+2. Configure each domain rule:
+	- enable/disable blocking per domain
+	- set start and end hour (`0` to `23`)
+	- use `start == end` to block all day
+3. Use search to filter large lists quickly.
+4. Import/export your blocklist as JSON for backup and migration.
 
 ## Development
 
 To make modifications and see changes in real-time:
 
-1. Run the following command to watch for changes and rebuild automatically:
+1. Run the following command for local development:
 
 ```bash
-npm run watch
+npm run dev
 ```
 
-2. Reload the extension in Chrome by going to `chrome://extensions/` and clicking the reload button next to the extension.
+2. For extension testing, run a production build and load `dist/` in `chrome://extensions/`.
 
 ## Testing
 
@@ -80,11 +84,19 @@ Use the following command to run all tests:
 npm run test
 ```
 
+Run lint checks:
+
+```bash
+npm run lint
+```
+
 ## Features
-- Block specific websites during designated hours.
-- Customizable time intervals for each blocked website.
-- Simple interface to manage your blocked sites and schedule.
-- Lightweight and efficient to keep your browser running smoothly.
+- Block exact domains and wildcard domain patterns.
+- Supports daytime, overnight, and always-on blocking windows.
+- Per-domain pause/resume without losing schedule settings.
+- Import/export blocklist JSON backups.
+- Search and quick stats in the options page.
+- Dedicated blocked page with schedule-aware messaging.
 
 ## License
 

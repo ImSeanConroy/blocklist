@@ -1,28 +1,33 @@
-import "./ListItem.css"
+import { formatSchedule, isWithinSchedule } from "./siteUtils";
+import { SiteRule } from "./types";
+import { Badge } from "@/components/ui/badge";
 
-const ListItem = ({
-  index,
-  item,
-  selectedItem,
-  onClick,
-}: {
-  index: number;
-  item: string;
-  selectedItem: string | null;
-  onClick: () => void;
-}) => {
+type ListItemProps = {
+  site: string;
+  rule: SiteRule;
+  onSelect: () => void;
+};
+
+const ListItem = ({ site, rule, onSelect }: ListItemProps) => {
+  const isBlockingNow = rule.enabled && isWithinSchedule(rule);
+
   return (
     <li
-      key={index}
-      onClick={onClick}
-      className={"border list_item" + (selectedItem === item ? " selected" : "")}
+      className="flex w-full items-center gap-3  rounded-xl border bg-white border-zinc-200 p-4 py-3.5 shadow-none hover:bg-zinc-100 cursor-pointer"
+      onClick={onSelect}
     >
       <img
-        className="border"
-        src={`https://www.google.com/s2/favicons?domain=${item}&size=24`}
+        className="h-10 w-10 rounded-md border border-zinc-200 bg-zinc-50 p-2"
+        src={`https://www.google.com/s2/favicons?domain=${site}&size=24`}
         alt="Favicon"
       />
-      {item}
+      <div className="min-w-0 flex-1">
+        <strong className="block truncate text-sm text-zinc-900">{site}</strong>
+        <span className="text-xs text-zinc-500">
+          {rule.enabled ? formatSchedule(rule) : "Paused"}
+        </span>
+      </div>
+      {isBlockingNow && <Badge variant="success">Active now</Badge>}
     </li>
   );
 };

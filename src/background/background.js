@@ -1,45 +1,193 @@
-// Initialize blocked sites and schedule on extension install
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({
-    sites: {}, // format: { "example.com": { startHour: 9, endHour: 17 } }
-  });
+const DEFAULT_RULE = {
+  startHour: 9,
+  endHour: 17,
+  enabled: true,
+};
+
+let cachedSites = {};
+
+initializeStorage();
+
+chrome.runtime.onInstalled.addListener(async () => {
+  await initializeStorage();
 });
 
-// Listen for navigation events
-chrome.webNavigation.onBeforeNavigate.addListener((details) => {
-  chrome.storage.sync.get(["sites"], (result) => {
-    const blockedSites = result.sites || {};
-    const url = new URL(details.url);
-    const hostname = url.hostname;
+chrome.runtime.onStartup.addListener(async () => {
+  await loadSitesCache();
+});
 
-    for (const domain in blockedSites) {
-      if (
-        details.frameId === 0 &&
-        isDomainMatch(hostname, domain) &&
-        isWithinBlockTime(blockedSites[domain])
-      ) {
-        const site = blockedSites[domain];
-        chrome.tabs.update(details.tabId, {
-          url: `blocked/blocked.html?site=${domain}&start=${site.startHour}&end=${site.endHour}`,
-        });
-        break;
-      }
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName === "sync" && changes.sites) {
+    cachedSites = changes.sites.newValue || {};
+  }
+});
+
+chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
+  if (details.frameId !== 0 || details.tabId < 0 || shouldIgnoreUrl(details.url)) {
+    return;
+  }
+
+  const hostname = getHostname(details.url);
+  if (!hostname) {
+    return;
+  }
+
+  if (!Object.keys(cachedSites).length) {
+    await loadSitesCache();
+  }
+
+  for (const [domainPattern, ruleValue] of Object.entries(cachedSites)) {
+    const rule = normalizeRule(ruleValue);
+
+    if (!rule.enabled || !isDomainMatch(hostname, domainPattern)) {
+      continue;
     }
-  });
+
+    if (!isWithinBlockTime(rule)) {
+      continue;
+    }
+
+    const blockedUrl = chrome.runtime.getURL("blocked/blocked.html");
+    const redirectUrl = `${blockedUrl}?site=${encodeURIComponent(
+      domainPattern,
+    )}&start=${rule.startHour}&end=${rule.endHour}`;
+
+    await chrome.tabs.update(details.tabId, {
+      url: redirectUrl,
+    });
+
+    return;
+  }
 });
 
-// Check if a hostname belongs to a blocked domain
-function isDomainMatch(hostname, domain) {
+async function initializeStorage() {
+  const result = await chrome.storage.sync.get(["sites"]);
+
+  if (!result.sites) {
+    await chrome.storage.sync.set({ sites: {} });
+    cachedSites = {};
+    return;
+  }
+
+  cachedSites = result.sites;
+}
+
+async function loadSitesCache() {
+  const result = await chrome.storage.sync.get(["sites"]);
+  cachedSites = result.sites || {};
+}
+
+function shouldIgnoreUrl(url) {
+  if (!url) {
+    return true;
+  }
+
+  const extensionBlockedPage = chrome.runtime.getURL("blocked/blocked.html");
+
   return (
-    hostname === domain || hostname.endsWith("." + domain)
+    url.startsWith(extensionBlockedPage) ||
+    /^(chrome|chrome-extension|edge|about|devtools|view-source):/i.test(url)
   );
 }
 
-// Function to check if the current time is within the blocking schedule
+function getHostname(url) {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch {
+    return "";
+  }
+}
+
+function normalizeRule(ruleValue) {
+  const startHour = normalizeHour(ruleValue?.startHour, DEFAULT_RULE.startHour);
+  const endHour = normalizeHour(ruleValue?.endHour, DEFAULT_RULE.endHour);
+
+  return {
+    startHour,
+    endHour,
+    enabled:
+      typeof ruleValue?.enabled === "boolean"
+        ? ruleValue.enabled
+        : DEFAULT_RULE.enabled,
+  };
+}
+
+function normalizeHour(value, fallback) {
+  const parsedValue = Number.parseInt(value, 10);
+
+  if (Number.isNaN(parsedValue) || parsedValue < 0 || parsedValue > 23) {
+    return fallback;
+  }
+
+  return parsedValue;
+}
+
+function normalizeDomainPattern(domainPattern) {
+  if (!domainPattern) {
+    return "";
+  }
+
+  const trimmedValue = String(domainPattern).trim().toLowerCase();
+
+  if (!trimmedValue) {
+    return "";
+  }
+
+  let hostname = trimmedValue;
+
+  try {
+    const asUrl = trimmedValue.includes("://")
+      ? new URL(trimmedValue)
+      : new URL(`https://${trimmedValue}`);
+
+    hostname = asUrl.hostname.toLowerCase();
+  } catch {
+    hostname = trimmedValue.split("/")[0].toLowerCase();
+  }
+
+  return hostname.replace(/^\.+/, "").replace(/\.+$/, "");
+}
+
+function toWildcardRegex(pattern) {
+  const escapedPattern = pattern
+    .replace(/[.+?^${}()|[\]\\]/g, "\\$&")
+    .replace(/\*/g, ".*");
+
+  return new RegExp(`^${escapedPattern}$`, "i");
+}
+
+function isDomainMatch(hostname, domainPattern) {
+  const normalizedHostname = hostname.toLowerCase();
+  const normalizedPattern = normalizeDomainPattern(domainPattern);
+
+  if (!normalizedPattern) {
+    return false;
+  }
+
+  if (normalizedPattern.includes("*")) {
+    return toWildcardRegex(normalizedPattern).test(normalizedHostname);
+  }
+
+  return (
+    normalizedHostname === normalizedPattern ||
+    normalizedHostname.endsWith(`.${normalizedPattern}`)
+  );
+}
+
 function isWithinBlockTime(blockSchedule) {
   const currentHour = new Date().getHours();
-  return (
-    currentHour >= blockSchedule.startHour &&
-    currentHour < blockSchedule.endHour
-  );
+  const startHour = normalizeHour(blockSchedule?.startHour, DEFAULT_RULE.startHour);
+  const endHour = normalizeHour(blockSchedule?.endHour, DEFAULT_RULE.endHour);
+
+  // start == end means "always block".
+  if (startHour === endHour) {
+    return true;
+  }
+
+  if (startHour < endHour) {
+    return currentHour >= startHour && currentHour < endHour;
+  }
+
+  // Overnight schedule (for example, 22 to 06).
+  return currentHour >= startHour || currentHour < endHour;
 }

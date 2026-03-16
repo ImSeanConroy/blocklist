@@ -2,20 +2,43 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
 
   const site = params.get("site") || "this site";
-  const start = formatHour(params.get("start"));
-  const end = formatHour(params.get("end"));
+  const start = parseHour(params.get("start"));
+  const end = parseHour(params.get("end"));
 
   const siteEl = document.getElementById("site");
-  const startEl = document.getElementById("start");
-  const endEl = document.getElementById("end");
+  const scheduleEl = document.getElementById("schedule");
 
   if (siteEl) siteEl.textContent = site;
-  if (startEl) startEl.textContent = start;
-  if (endEl) endEl.textContent = end;
+
+  if (scheduleEl) {
+    scheduleEl.textContent = formatSchedule(start, end);
+  }
 });
 
-function formatHour(value) {
+function parseHour(value) {
   const hour = parseInt(value, 10);
-  if (isNaN(hour) || hour < 0 || hour > 23) return "00";
-  return hour.toString().padStart(2, "0");
+
+  if (isNaN(hour) || hour < 0 || hour > 23) {
+    return 0;
+  }
+
+  return hour;
+}
+
+function formatHour(hour) {
+  return String(hour).padStart(2, "0");
+}
+
+function formatSchedule(startHour, endHour) {
+  if (startHour === endHour) {
+    return "all hours";
+  }
+
+  const base = `${formatHour(startHour)}:00 to ${formatHour(endHour)}:00`;
+
+  if (startHour > endHour) {
+    return `${base} (overnight)`;
+  }
+
+  return base;
 }
